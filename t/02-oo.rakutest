@@ -5,7 +5,7 @@ use lib 'lib';
 use Math::Libgsl::RunningStatistics;
 use Math::Libgsl::Constants;
 
-my Math::Libgsl::RunningStatistics $r .= new: :percentile(.1);
+my Math::Libgsl::RunningStatistics $r .= new: :quantile(.1, .2, .3, .4, .5, .6, .7, .8, .9);
 isa-ok $r, Math::Libgsl::RunningStatistics, 'create object';
 
 ok $r.add(12) == GSL_SUCCESS, 'add a value';
@@ -31,10 +31,12 @@ ok $r.max == 9, 'max after reset';
 ok $r.qadd(12) == GSL_SUCCESS, 'add a value to quantile workspace';
 
 $r.qadd($_) for (^10);
-ok $r.qget == 2, 'read quantile';
+my @quantile = $r.qget;
+ok @quantile[0] == 2, 'read quantile';
 
 ok $r.qreset == GSL_SUCCESS, 'reset quantile workspace';
 $r.qadd($_) for (^100);
-ok $r.qget == 9, 'read quantile after reset';
+@quantile = $r.qget;
+is-deeply @quantile, [9e0, 19e0, 29e0, 39e0, 49e0, 59e0, 69e0, 79e0, 89e0], 'read quantile array after reset';
 
 done-testing;

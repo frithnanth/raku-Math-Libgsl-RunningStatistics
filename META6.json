@@ -21,8 +21,6 @@
     "math",
     "nativecall"
   ],
-  "test-depends" : [
-    "Math::Libgsl::Constants"
-  ],
+  "test-depends" : [ ],
   "version" : "0.0.1"
 }

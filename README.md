@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/frithnanth/raku-Math-Libgsl-RunningStatistics.svg?branch=master)](https://travis-ci.org/frithnanth/raku-Math-Libgsl-RunningStatistics)
-[![Actions Status](https://github.com/frithnanth/raku-Math-Libgsl-RunningStatistics/workflows/test/badge.svg)](https://github.com/frithnanth/raku-Math-Libgsl-RunningStatistics/actions)
+[![Actions Status](https://github.com/frithnanth/raku-Math-Libgsl-RunningStatistics/workflows/test/badge.svg)](https://github.com/frithnanth/raku-Math-Libgsl-RunningStatistics/actions) [![Build Status](https://travis-ci.org/frithnanth/raku-Math-Libgsl-RunningStatistics.svg?branch=master)](https://travis-ci.org/frithnanth/raku-Math-Libgsl-RunningStatistics)
 
 NAME
 ====
@@ -26,9 +25,9 @@ Math::Libgsl::RunningStatistics is an interface to the Running Statistics functi
 
 This class is suitable for handling large datasets for which it may be inconvenient or impractical to store in memory all at once.
 
-### new(Num() :$percentile = 0.5)
+### new(:@quantile = 0.5,)
 
-The constructor accepts one optional parameter, the percentile, which defaults to 0.5 i.e. the median. The $percentile argument will be used only if one uses the percentile methods.
+The constructor accepts one optional parameter, the quantile array, which defaults to just one value: 0.5 i.e. the median. The @quantile argument will be used only if one uses the quantile methods.
 
 ### add(Num() $x --> Int)
 
@@ -84,15 +83,15 @@ This method resets the accumulator.
 
 ### qadd(Num() $x --> Int)
 
-This method adds a value to the quantile accumulator. It returns GSL_SUCCESS if successful.
+This method adds a value to the quantile accumulators. It returns GSL_SUCCESS if successful. If not successful it returns the first error found and the accumulators are left in an undefined state, so you're advised to .qreset() them.
 
-### qget(Num() $x --> Int)
+### qget(Num() $x --> List)
 
-This method returns the current estimate of the quantile specified when the object was created.
+This method returns a List of all the current estimate of the quantiles specified when the object was created.
 
 ### qreset(--> Int)
 
-This method resets the quantile accumulator.
+This method resets the quantile accumulators. It returns GSL_SUCCESS if successful. If not successful it returns the first error found.
 
 C Library Documentation
 =======================
