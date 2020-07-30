@@ -1,0 +1,58 @@
+#!/usr/bin/env perl6
+
+use Test;
+use NativeCall;
+use lib 'lib';
+use Math::Libgsl::Raw::RunningStatistics;
+use Math::Libgsl::Constants;
+
+my $w = gsl_rstat_alloc;
+isa-ok $w, Math::Libgsl::Raw::RunningStatistics::gsl_rstat_workspace, 'create workspace';
+
+ok gsl_rstat_add(12e0, $w) == GSL_SUCCESS, 'add a value to workspace';
+
+for (^10)».Num -> $d {
+  gsl_rstat_add($d, $w);
+}
+
+ok gsl_rstat_n($w) == 11, 'workspace size';
+ok gsl_rstat_min($w) == 0, 'min';
+ok gsl_rstat_max($w) == 12, 'max';
+is-approx gsl_rstat_mean($w), 5.181818181818182, :rel-tol(10⁻¹²), 'mean';
+is-approx gsl_rstat_variance($w), 13.363636363636365, :rel-tol(10⁻¹²), 'variance';
+is-approx gsl_rstat_sd($w), 3.6556307750696546, :rel-tol(10⁻¹²), 'standard deviation';
+is-approx gsl_rstat_sd_mean($w), 1.1022141502711038, :rel-tol(10⁻¹²), 'standard deviation of the mean';
+is-approx gsl_rstat_rms($w), 6.244997998398398, :rel-tol(10⁻¹²), 'RMS of data';
+is-approx gsl_rstat_skew($w), 0.26990572153215797, :rel-tol(10⁻¹²), 'skew';
+is-approx gsl_rstat_kurtosis($w), -1.16641367290718, :rel-tol(10⁻¹²), 'kurtosis';
+is-approx gsl_rstat_median($w), 6.311111111111111, :rel-tol(10⁻¹²), 'median';
+
+ok gsl_rstat_reset($w) == GSL_SUCCESS, 'reset workspace';
+
+for (^10)».Num -> $d {
+  gsl_rstat_add($d, $w);
+}
+ok gsl_rstat_max($w) == 9, 'max after reset';
+
+lives-ok { gsl_rstat_free($w) }, 'free workspace';
+
+my $q = gsl_rstat_quantile_alloc(.1e0);
+isa-ok $q, Math::Libgsl::Raw::RunningStatistics::gsl_rstat_quantile_workspace, 'create quantile workspace';
+
+ok gsl_rstat_quantile_add(12e0, $q) == GSL_SUCCESS, 'add a value to quantile workspace';
+
+for (^10)».Num -> $d {
+  gsl_rstat_quantile_add($d, $q);
+}
+ok gsl_rstat_quantile_get($q) == 2, 'read quantile';
+
+ok gsl_rstat_quantile_reset($q) == GSL_SUCCESS, 'reset quantile workspace';
+
+for (^100)».Num -> $d {
+  gsl_rstat_quantile_add($d, $q);
+}
+ok gsl_rstat_quantile_get($q) == 9, 'read quantile after reset';
+
+lives-ok { gsl_rstat_quantile_free($q) }, 'free quantile workspace';
+
+done-testing;

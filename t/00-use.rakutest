@@ -1,0 +1,9 @@
+#!/usr/bin/env raku
+
+use Test;
+use lib 'lib';
+
+use-ok 'Math::Libgsl::Raw::RunningStatistics';
+use-ok 'Math::Libgsl::RunningStatistics';
+
+done-testing;

@@ -1,0 +1,40 @@
+#!/usr/bin/env perl6
+
+use Test;
+use lib 'lib';
+use Math::Libgsl::RunningStatistics;
+use Math::Libgsl::Constants;
+
+my Math::Libgsl::RunningStatistics $r .= new: :percentile(.1);
+isa-ok $r, Math::Libgsl::RunningStatistics, 'create object';
+
+ok $r.add(12) == GSL_SUCCESS, 'add a value';
+
+$r.add($_) for (^10);
+ok $r.n == 11, 'workspace size';
+ok $r.min == 0, 'min';
+ok $r.max == 12, 'max';
+is-approx $r.mean, 5.181818181818182, :rel-tol(10⁻¹²), 'mean';
+is-approx $r.variance, 13.363636363636365, :rel-tol(10⁻¹²), 'variance';
+is-approx $r.sd, 3.6556307750696546, :rel-tol(10⁻¹²), 'standard deviation';
+is-approx $r.sd-mean, 1.1022141502711038, :rel-tol(10⁻¹²), 'standard deviation of the mean';
+is-approx $r.rms, 6.244997998398398, :rel-tol(10⁻¹²), 'RMS of data';
+is-approx $r.skew, 0.26990572153215797, :rel-tol(10⁻¹²), 'skew';
+is-approx $r.kurtosis, -1.16641367290718, :rel-tol(10⁻¹²), 'kurtosis';
+is-approx $r.median, 6.311111111111111, :rel-tol(10⁻¹²), 'median';
+
+ok $r.reset == GSL_SUCCESS, 'reset workspace';
+
+$r.add($_) for (^10);
+ok $r.max == 9, 'max after reset';
+
+ok $r.qadd(12) == GSL_SUCCESS, 'add a value to quantile workspace';
+
+$r.qadd($_) for (^10);
+ok $r.qget == 2, 'read quantile';
+
+ok $r.qreset == GSL_SUCCESS, 'reset quantile workspace';
+$r.qadd($_) for (^100);
+ok $r.qget == 9, 'read quantile after reset';
+
+done-testing;

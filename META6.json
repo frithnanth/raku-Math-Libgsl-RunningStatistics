@@ -1,0 +1,28 @@
+{
+  "auth" : "cpan:FRITH",
+  "authors" : [
+    "Fernando Santagata"
+  ],
+  "build-depends" : [ ],
+  "depends" : [
+    "Math::Libgsl::Constants"
+  ],
+  "description" : "An interface to libgsl, the Gnu Scientific Library - Running Statistics",
+  "license" : "Artistic-2.0",
+  "name" : "Math::Libgsl::RunningStatistics",
+  "perl" : "6.d",
+  "provides" : {
+    "Math::Libgsl::Raw::RunningStatistics" : "lib/Math/Libgsl/Raw/RunningStatistics.rakumod",
+    "Math::Libgsl::RunningStatistics" : "lib/Math/Libgsl/RunningStatistics.rakumod"
+  },
+  "resources" : [ ],
+  "source-url" : "git://github.com/frithnanth/raku-Math-Libgsl-RunningStatistics.git",
+  "tags" : [
+    "math",
+    "nativecall"
+  ],
+  "test-depends" : [
+    "Math::Libgsl::Constants"
+  ],
+  "version" : "0.0.1"
+}
