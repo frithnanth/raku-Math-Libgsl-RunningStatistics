@@ -1,4 +1,4 @@
-unit class Math::Libgsl::RunningStatistics:ver<0.0.1>:auth<zef:FRITH>;
+unit class Math::Libgsl::RunningStatistics:ver<0.0.2>:auth<zef:FRITH>;
 
 use Math::Libgsl::Raw::RunningStatistics;
 use Math::Libgsl::Constants;
