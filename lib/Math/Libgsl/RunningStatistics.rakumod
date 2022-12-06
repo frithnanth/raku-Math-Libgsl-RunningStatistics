@@ -1,4 +1,4 @@
-unit class Math::Libgsl::RunningStatistics:ver<0.0.1>:auth<cpan:FRITH>;
+unit class Math::Libgsl::RunningStatistics:ver<0.0.1>:auth<zef:FRITH>;
 
 use Math::Libgsl::Raw::RunningStatistics;
 use Math::Libgsl::Constants;
@@ -163,7 +163,7 @@ The excellent C Library manual is available here L<https://www.gnu.org/software/
 
 This module requires the libgsl library to be installed. Please follow the instructions below based on your platform:
 
-=head2 Debian Linux and Ubuntu 20.04
+=head2 Debian Linux and Ubuntu 20.04+
 
 =begin code
 sudo apt install libgsl23 libgsl-dev libgslcblas0
